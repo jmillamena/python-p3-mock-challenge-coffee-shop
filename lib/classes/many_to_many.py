@@ -1,3 +1,6 @@
+from statistics import mean
+
+
 class Coffee:
     def __init__(self, name):
         self.name = name
@@ -18,10 +21,10 @@ class Coffee:
         return list(set([order.customer for order in Order.all if order.coffee is self]))
 
     def num_orders(self):
-        pass
+        return len(self.orders())
 
     def average_price(self):
-        pass
+        return mean([order.price for order in self.orders()])
 
 
 class Customer:
@@ -44,10 +47,10 @@ class Customer:
         return [order for order in Order.all if order.customer is self]
 
     def coffees(self):
-        return [order.coffee for order in Order.all if order.customer is self]
+        return list(set([order.coffee for order in Order.all if order.customer is self]))
 
     def create_order(self, coffee, price):
-        pass
+        return Order(self, coffee, price)
 
 
 class Order:
@@ -83,5 +86,5 @@ class Order:
 
     @price.setter
     def price(self, price):
-        if (isinstance(price, float) and price in range(1, 11) and not hasattr(self, 'price')):
+        if (isinstance(price, float) and 1.0 <= price <= 10.0 and not hasattr(self, 'price')):
             self._price = price
